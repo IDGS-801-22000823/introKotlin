@@ -52,14 +52,14 @@ class agregarActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        // Listener para el botón Guardar
+        // botón Guardar
         btnGuardar.setOnClickListener {
             mostrarDialogoConfirmacion()
         }
 
-        // Listener para el botón Regresar al Menú
+        //botón Regresar al Menú
         btnRegresarMenu.setOnClickListener {
-            finish() // Cierra la actividad y regresa a la anterior
+            finish()
         }
     }
 
@@ -67,16 +67,16 @@ class agregarActivity : AppCompatActivity() {
         val palabraEspanol = etEspanol.text.toString().trim()
         val palabraIngles = etIngles.text.toString().trim()
 
-        // Validar que ambos campos estén llenos
+        // Validar campos
         if (palabraEspanol.isEmpty() || palabraIngles.isEmpty()) {
             Toast.makeText(this, "Por favor, completa ambos campos", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Guardar directamente la palabra
+        // Guardar la palabra
         guardarPalabra(palabraEspanol, palabraIngles)
 
-        // Mostrar mensaje de confirmación con solo botón OK
+        // Mostrar mensaje de confirmacion
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Guardado Exitoso")
         builder.setMessage("La palabra se ha guardado correctamente:\n\nEspañol: $palabraEspanol\nInglés: $palabraIngles")
@@ -97,7 +97,7 @@ class agregarActivity : AppCompatActivity() {
                 return
             }
 
-            // Crear el directorio si no existe
+            // Crear si no existe
             val directory = File(filesDir, "diccionario")
             if (!directory.exists()) {
                 directory.mkdirs()
@@ -110,19 +110,16 @@ class agregarActivity : AppCompatActivity() {
             val fechaHora = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
             val textoAGuardar = "$palabraEspanol|$palabraIngles|$fechaHora\n"
 
-            // Escribir al archivo (agregar al final)
-            val fos = FileOutputStream(archivo, true) // true = append mode
+            // Escribir al archivo
+            val fos = FileOutputStream(archivo, true)
             fos.write(textoAGuardar.toByteArray())
             fos.close()
 
-            // Limpiar campos
             etEspanol.text.clear()
             etIngles.text.clear()
 
-            // Mostrar mensaje de éxito
             Toast.makeText(this, "Palabra guardada exitosamente en archivo TXT", Toast.LENGTH_LONG).show()
 
-            // Enfocar el primer campo para continuar agregando
             etEspanol.requestFocus()
 
         } catch (e: IOException) {
